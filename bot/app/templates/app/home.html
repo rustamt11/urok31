@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Добро пожаловать</title>
+    <style>
+    .chat-container {
+        width: 450px;
+        margin: 20px auto;
+        padding: 15px;
+        border: 2px solid #4a76a8;
+        border-radius: 10px;
+        background-color: #f0f0f0;
+    }
+    .chat-messages {
+        height: 350px;
+        overflow-y: auto;
+        border: 2px solid #4a76a8;
+        background-color: #ffffff;
+        padding: 5px;
+    }
+    .chat-input {
+        width: calc(100% - 20px);
+        padding: 10px;
+        border: 2px solid #4a76a8;
+        margin-top: 10px;
+        border-radius: 5px;
+    }
+</style>
+
+</head>
+<body>
+    <h1>Добро пожаловать на наш сайт</h1>
+    <p>Выберите одну из следующих опций:</p>
+
+    <ul>
+        <li><a href="{% url 'register' %}">Регистрация</a></li>
+        <li><a href="{% url 'login' %}">Вход</a></li>
+           <a href="{% url 'logout' %}">Выход</a>
+    </ul>
+
+    {% if user.is_authenticated %}
+        <div class="chat-container">
+            <h2>Чат</h2>
+            <div class="chat-messages">
+                {% for message in messages %}
+                    <p>{{ message.content }}</p>
+                {% endfor %}
+            </div>
+            <form method="post">
+                {% csrf_token %}
+                <input type="text" class="chat-input" name="message" placeholder="Введите ваше сообщение">
+                <button type="submit">Отправить</button>
+            </form>
+        </div>
+    {% else %}
+        <p>Вы не авторизованы. <a href="{% url 'login' %}">Войдите</a> или <a href="{% url 'register' %}">зарегистрируйтесь</a>, чтобы отправлять сообщения.</p>
+    {% endif %}
+</body>
+</html>
